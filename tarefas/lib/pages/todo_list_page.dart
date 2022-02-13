@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarefas/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
   TodoListPage({Key? key}) : super(key: key);
@@ -60,9 +61,7 @@ class _TodoListPageState extends State<TodoListPage> {
                     shrinkWrap: true,
                     children: [
                       for (String todo in todos)
-                        ListTile(
-                          title: Text(todo),
-                        ),
+                       TodoListItem(),
                     ],
                   ),
                 ),
