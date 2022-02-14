@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarefas/models/todo.dart';
 import 'package:tarefas/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -11,81 +12,89 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todosController = TextEditingController();
 
-  List<String> todos = [];
+  List<Todo> todos = [];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: todosController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Adicione uma tarefa',
-                        hintText: 'Ex: Estudar Flutter',
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: todosController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Adicione uma tarefa',
+                          hintText: 'Ex: Estudar Flutter',
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      String text = todosController.text;
-                      setState(() {
-                        todos.add(text);
-                      });
-                      todosController.clear();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff00d7f3),
-                      padding: EdgeInsets.all(16),
+                    SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        String text = todosController.text;
+                        setState(() {
+                          Todo newTodo = Todo(
+                            title: text,
+                            dateTime: DateTime.now()
+                          );
+                          todos.add(newTodo);
+                        });
+                        todosController.clear();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xff00d7f3),
+                        padding: EdgeInsets.all(16),
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
                     ),
-                    child: Icon(
-                      Icons.add,
-                      size: 30,
+                  ],
+                ),
+                SizedBox(height: 16),
+                Flexible(
+                  child: SizedBox(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        for (Todo tarefa in todos)
+                         TodoListItem(
+                           todo: tarefa,
+                         ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Flexible(
-                child: SizedBox(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      for (String todo in todos)
-                       TodoListItem(),
-                    ],
                   ),
                 ),
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Você possui 0 tarefas pendentes',
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Você possui ${todos.length} tarefa(s) pendente(s)',
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff00d7f3),
-                      padding: EdgeInsets.all(16),
+                    SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xff00d7f3),
+                        padding: EdgeInsets.all(16),
+                      ),
+                      child: Text('Limpar tudo'),
                     ),
-                    child: Text('Limpar tudo'),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
