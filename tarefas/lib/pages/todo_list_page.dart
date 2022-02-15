@@ -41,10 +41,8 @@ class _TodoListPageState extends State<TodoListPage> {
                       onPressed: () {
                         String text = todosController.text;
                         setState(() {
-                          Todo newTodo = Todo(
-                            title: text,
-                            dateTime: DateTime.now()
-                          );
+                          Todo newTodo =
+                              Todo(title: text, dateTime: DateTime.now());
                           todos.add(newTodo);
                         });
                         todosController.clear();
@@ -67,9 +65,10 @@ class _TodoListPageState extends State<TodoListPage> {
                       shrinkWrap: true,
                       children: [
                         for (Todo tarefa in todos)
-                         TodoListItem(
-                           todo: tarefa,
-                         ),
+                          TodoListItem(
+                            todo: tarefa,
+                            onDelete: onDelete,
+                          ),
                       ],
                     ),
                   ),
@@ -99,5 +98,11 @@ class _TodoListPageState extends State<TodoListPage> {
         ),
       ),
     );
+  }
+
+  void onDelete(Todo todo) {
+    setState(() {
+      todos.remove(todo);
+    });
   }
 }
